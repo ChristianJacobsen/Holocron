@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
+import { MaterialModule } from "@angular/material"
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -10,6 +11,8 @@ import { RoomComponent } from './room/room.component';
 import { RoomlistComponent } from './roomlist/roomlist.component';
 
 import { ChatService } from "./chat.service";
+
+import 'hammerjs';
 
 @NgModule({
     declarations: [
@@ -36,7 +39,8 @@ import { ChatService } from "./chat.service";
                 path: "rooms",
                 component: RoomlistComponent
             }
-        ])
+        ]),
+        MaterialModule.forRoot()
     ],
     providers: [ChatService],
     bootstrap: [AppComponent]

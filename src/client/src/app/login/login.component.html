@@ -1,5 +1,7 @@
-<input type="text" [(ngModel)]="userName" />
-<button (click)="onLogin()">Login</button>
+<md-input-container>
+  <input md-input type="text" [(ngModel)]="userName" placeholder="Username" />
+</md-input-container>
+<button md-raised-button (click)="onLogin()" color="primary">Login</button>
 <div [hidden]="!loginFailed">
-    <p>Sorry, but this username is already taken!</p>
+  <p>Sorry, but this username is already taken!</p>
 </div>

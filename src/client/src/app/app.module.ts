@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
 import { MaterialModule } from "@angular/material"
+import { FlexLayoutModule } from "@angular/flex-layout"
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -40,7 +41,8 @@ import 'hammerjs';
                 component: RoomlistComponent
             }
         ]),
-        MaterialModule.forRoot()
+        MaterialModule.forRoot(),
+        FlexLayoutModule
     ],
     providers: [ChatService],
     bootstrap: [AppComponent]

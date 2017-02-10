@@ -26,13 +26,17 @@ export class ChatService {
         return observable;
     }
 
-    getRoomList(): Observable<string[]> {
+    getRoomList(): Observable<any[]> {
         let observable = new Observable(observer => {
             this.socket.emit("rooms");
             this.socket.on("roomlist", list => {
-                let roomList: string[] = [];
-                for (var x in list) {
-                    roomList.push(x);
+                let roomList: any[] = [];
+
+                for (let room in list) {
+                    roomList.push({
+                        name: room,
+                        users: Object.getOwnPropertyNames(list[room].users).length
+                    });
                 }
                 observer.next(roomList);
             });

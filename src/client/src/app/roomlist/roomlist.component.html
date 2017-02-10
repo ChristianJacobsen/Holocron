@@ -2,11 +2,13 @@
   <md-card fxFlex="50%">
     <md-nav-list>
       <h3 md-subheader>Rooms</h3>
-      <md-list-item *ngFor="let room of rooms; let i = index">
-        <md-icon md-list-avatar>weekend</md-icon>
-        <a md-line href="/room/{{i}}">{{ room.name }}</a>
-        <p md-line>{{room.users}} users</p>
-      </md-list-item>
+      <a *ngFor="let room of rooms; let i = index" href="/room/{{i}}">
+        <md-list-item>
+          <md-icon md-list-avatar>weekend</md-icon>
+          <p md-line>{{ room.name }}</p>
+          <p md-line>{{ room.users }} users</p>
+        </md-list-item>
+      </a>
     </md-nav-list>
   </md-card>
 </md-card>

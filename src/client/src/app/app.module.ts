@@ -1,19 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { BrowserModule } from "@angular/platform-browser";
+import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
 import { MaterialModule } from "@angular/material"
 import { FlexLayoutModule } from "@angular/flex-layout"
 
-import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RoomComponent } from './room/room.component';
-import { RoomlistComponent } from './roomlist/roomlist.component';
+import { AppComponent } from "./app.component";
+import { LoginComponent } from "./login/login.component";
+import { RoomComponent } from "./room/room.component";
+import { RoomlistComponent } from "./roomlist/roomlist.component";
 
 import { ChatService } from "./chat.service";
 
-import 'hammerjs';
+import "hammerjs";
 
 @NgModule({
     declarations: [

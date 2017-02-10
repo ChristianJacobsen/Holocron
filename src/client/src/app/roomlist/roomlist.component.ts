@@ -1,22 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 import { ChatService } from "../chat.service";
 
 @Component({
-    selector: 'app-roomlist',
-    templateUrl: './roomlist.component.html',
-    styleUrls: ['./roomlist.component.css']
+    selector: "app-roomlist",
+    templateUrl: "./roomlist.component.html",
+    styleUrls: ["./roomlist.component.css"]
 })
 export class RoomlistComponent implements OnInit {
 
-    rooms: string[];
+    rooms: any[];
 
     constructor(private chatService: ChatService) { }
 
     ngOnInit() {
         this.chatService.getRoomList().subscribe(list => {
             this.rooms = list;
-            console.log(list);
         });
     }
 

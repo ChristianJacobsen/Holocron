@@ -1,8 +1,8 @@
 <md-card fxLayout="row" fxLayoutAlign="center center">
-  <md-card fxFlex="50%">
+  <md-card fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="80%">
     <md-nav-list>
       <h3 md-subheader>Rooms</h3>
-      <a *ngFor="let room of rooms; let i = index" href="/room/{{i}}">
+      <a *ngFor="let room of rooms; let i = index" [routerLink]="['/rooms', room.name]">
         <md-list-item>
           <md-icon md-list-avatar>weekend</md-icon>
           <p md-line>{{ room.name }}</p>
@@ -10,5 +10,9 @@
         </md-list-item>
       </a>
     </md-nav-list>
+    <md-input-container>
+      <input md-input type="text" [(ngModel)]="roomName" placeholder="Room name" />
+    </md-input-container>
+    <button md-raised-button (click)="onAddRoom()" color="primary">Add Room</button>
   </md-card>
 </md-card>

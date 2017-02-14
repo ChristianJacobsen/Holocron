@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import * as io from "socket.io-client";
 import { Observable } from "rxjs/Observable";
 
@@ -17,7 +17,7 @@ export class ChatService {
     }
 
     login(userName: string): Observable<boolean> {
-        let observable = new Observable(observer => {
+        const observable = new Observable(observer => {
             this.socket.emit("adduser", userName, succeeded => {
                 observer.next(succeeded);
             });
@@ -27,16 +27,19 @@ export class ChatService {
     }
 
     getRoomList(): Observable<any[]> {
-        let observable = new Observable(observer => {
+        const observable = new Observable(observer => {
             this.socket.emit("rooms");
             this.socket.on("roomlist", list => {
-                let roomList: any[] = [];
+                const roomList: any[] = [];
 
-                for (let room in list) {
-                    roomList.push({
-                        name: room,
-                        users: Object.getOwnPropertyNames(list[room].users).length
-                    });
+                for (const room in list) {
+                    if (list.hasOwnProperty(room)) {
+                        roomList.push({
+                            name: room,
+                            users: Object.getOwnPropertyNames(list[room].users).length
+                        });
+                    }
+
                 }
                 observer.next(roomList);
             });
@@ -45,4 +48,17 @@ export class ChatService {
         return observable;
     }
 
+    addRoom(roomName: string): Observable<boolean> {
+        const observable = new Observable(observer => {
+            const param = {
+                room: roomName
+            };
+
+            this.socket.emit("joinroom", param, function (a: boolean, b) {
+                observer.next(a);
+            });
+        });
+
+        return observable;
+    }
 }

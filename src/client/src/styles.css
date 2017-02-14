@@ -2,3 +2,7 @@
 
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "~@angular/material/core/theming/prebuilt/indigo-pink.css";
+@import "~ng2-toastr/bundles/ng2-toastr.min.css";
+.customToastr {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

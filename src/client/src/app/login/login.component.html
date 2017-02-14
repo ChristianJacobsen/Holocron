@@ -1,11 +1,8 @@
 <md-card fxLayout="row" fxLayoutAlign="center center">
-  <md-card fxFlex="50%" fxLayoutAlign="center center">
+  <md-card fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayoutAlign="center center">
     <md-input-container>
       <input md-input type="text" [(ngModel)]="userName" placeholder="Username" />
     </md-input-container>
     <button md-raised-button (click)="onLogin()" color="primary">Login</button>
-    <div [hidden]="!loginFailed">
-      <p>Sorry, but this username is already taken!</p>
-    </div>
   </md-card>
 </md-card>

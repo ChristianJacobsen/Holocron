@@ -3,8 +3,9 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
-import { MaterialModule } from "@angular/material"
-import { FlexLayoutModule } from "@angular/flex-layout"
+import { MaterialModule } from "@angular/material";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { ToastModule, ToastOptions } from "ng2-toastr";
 
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
@@ -14,6 +15,12 @@ import { RoomlistComponent } from "./roomlist/roomlist.component";
 import { ChatService } from "./chat.service";
 
 import "hammerjs";
+import "ng2-toastr";
+
+const toastOptions: ToastOptions = new ToastOptions({
+    titleClass: "customToastr",
+    messageClass: "customToastr",
+});
 
 @NgModule({
     declarations: [
@@ -39,10 +46,15 @@ import "hammerjs";
             {
                 path: "rooms",
                 component: RoomlistComponent
+            },
+            {
+                path: "rooms/:id",
+                component: RoomComponent
             }
         ]),
         MaterialModule.forRoot(),
-        FlexLayoutModule
+        FlexLayoutModule,
+        ToastModule.forRoot(toastOptions)
     ],
     providers: [ChatService],
     bootstrap: [AppComponent]

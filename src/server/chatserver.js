@@ -22,7 +22,7 @@ io.sockets.on("connection", function (socket) {
     socket.on("adduser", function (username, fn) {
 
         //Check if username is avaliable.
-        if (users[username] === undefined && username.toLowerCase != "server" && username.length < 21) {
+        if (users[username] === undefined && username.toLowerCase !== "server" && username.length < 21) {
             socket.username = username;
 
             //Store user object in global user roster.
@@ -78,7 +78,7 @@ io.sockets.on("connection", function (socket) {
             //Check if user submits the correct password
             else {
                 //If it doesnt match we set accepted to false.
-                if (pass != rooms[room].password) {
+                if (pass !== rooms[room].password) {
                     accepted = false;
                     reason = "wrong password";
                 }

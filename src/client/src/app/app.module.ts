@@ -17,11 +17,6 @@ import { ChatService } from "./chat.service";
 import "hammerjs";
 import "ng2-toastr";
 
-const toastOptions: ToastOptions = new ToastOptions({
-    titleClass: "customToastr",
-    messageClass: "customToastr",
-});
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -54,7 +49,10 @@ const toastOptions: ToastOptions = new ToastOptions({
         ]),
         MaterialModule.forRoot(),
         FlexLayoutModule,
-        ToastModule.forRoot(toastOptions)
+        ToastModule.forRoot(new ToastOptions({
+            titleClass: "customToastr",
+            messageClass: "customToastr",
+        }))
     ],
     providers: [ChatService],
     bootstrap: [AppComponent]

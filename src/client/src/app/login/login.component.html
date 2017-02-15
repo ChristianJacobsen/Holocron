@@ -1,8 +1,18 @@
-<md-card fxLayout="row" fxLayoutAlign="center center">
-  <md-card fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="80%" fxLayoutAlign="center center">
-    <md-input-container>
-      <input md-input type="text" [(ngModel)]="userName" placeholder="Username" />
-    </md-input-container>
-    <button md-raised-button (click)="onLogin()" color="primary">Login</button>
+<div class="margin-top" fxLayoutAlign="center">
+  <md-card fxLayout="row" fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="80%">
+    <div fxFlex="30%" fxHide.xs>
+    </div>
+    <div fxFlex="40%" fxLayout="column" fxLayoutAlign="center none">
+      <div fxFlex>
+        <md-input-container class="full-width">
+          <input md-input type="text" [(ngModel)]="userName" placeholder="Username" />
+        </md-input-container>
+      </div>
+      <div fxFlex>
+        <button md-raised-button class="full-width" (click)="onLogin()" color="primary">Login</button>
+      </div>
+    </div>
+    <div fxFlex="30%" fxHide.xs>
+    </div>
   </md-card>
-</md-card>
+</div>

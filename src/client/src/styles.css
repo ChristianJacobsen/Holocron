@@ -1,8 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
 
+
+/* Imports */
+
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "~@angular/material/core/theming/prebuilt/indigo-pink.css";
 @import "~ng2-toastr/bundles/ng2-toastr.min.css";
+
+/* Styles */
+
+body {
+  margin: 0;
+}
+
 .customToastr {
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.margin-top {
+  margin-top: 1em;
+}
+
+.full-width {
+  width: 100%;
 }

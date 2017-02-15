@@ -48,7 +48,7 @@ import "ng2-toastr";
             }
         ]),
         MaterialModule.forRoot(),
-        FlexLayoutModule,
+        FlexLayoutModule.forRoot(),
         ToastModule.forRoot()
     ],
     providers: [ChatService],

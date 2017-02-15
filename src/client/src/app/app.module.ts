@@ -49,10 +49,7 @@ import "ng2-toastr";
         ]),
         MaterialModule.forRoot(),
         FlexLayoutModule,
-        ToastModule.forRoot(new ToastOptions({
-            titleClass: "customToastr",
-            messageClass: "customToastr",
-        }))
+        ToastModule.forRoot()
     ],
     providers: [ChatService],
     bootstrap: [AppComponent]

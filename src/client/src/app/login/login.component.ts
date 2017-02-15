@@ -31,7 +31,13 @@ export class LoginComponent implements OnInit {
             if (succeeded) {
                 this.router.navigate(["/rooms"]);
             } else {
-                this.toastr.error("Username already taken!", "Authentication error");
+                this.toastr.error(
+                    "Username already taken!",
+                    "Authentication error",
+                    {
+                        titleClass: "customToastr",
+                        messageClass: "customToastr"
+                    });
             }
         });
     }

@@ -1,12 +1,13 @@
-<md-card fxLayout="row" fxLayoutAlign="center center">
+<div class="margin-top" fxLayout="row" fxLayoutAlign="center center">
   <md-card fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="80%">
     <md-nav-list>
       <h3 md-subheader>Rooms</h3>
-      <a *ngFor="let room of rooms; let i = index" [routerLink]="['/rooms', room.name]">
+      <a *ngFor="let room of rooms; let i = index" (click)="onJoinRoom(room.name);false">
         <md-list-item>
           <md-icon md-list-avatar>weekend</md-icon>
           <p md-line>{{ room.name }}</p>
           <p md-line>{{ room.users }} users</p>
+          <p md-line>{{ getDate() }}</p>
         </md-list-item>
       </a>
     </md-nav-list>
@@ -15,4 +16,4 @@
     </md-input-container>
     <button md-raised-button (click)="onAddRoom()" color="primary">Add Room</button>
   </md-card>
-</md-card>
+</div>

@@ -1,6 +1,29 @@
-<p>
-  room works!
-</p>
-<p>
-  {{id}}
-</p>
+<!-- Container -->
+<div fxLayoutAlign="center" class="full-height">
+  <!-- Main -->
+  <div fxLayout="column" fxFlex="80%">
+    <!-- Chat -->
+    <div fxFlex="92%" id="chatBox">
+      <p *ngFor="let msg of messages; let last = last">
+        {{ msg.message }} {{ getDate() }}
+      </p>
+    </div>
+    <!-- Input -->
+    <div fxLayout="row" fxFlex="8%">
+      <!-- Text -->
+      <div fxFlex="92%">
+        <textarea (keydown.enter)="onSubmit();false" id="messageBox" placeholder="Message" maxlength="200"></textarea>
+      </div>
+      <!-- Send -->
+      <div fxFlex="8%">
+        <button md-raised-button id="sendButton" (click)="onSubmit()" color="primary"><md-icon>send</md-icon></button>
+      </div>
+    </div>
+  </div>
+  <!-- Users -->
+  <div fxLayout="row" fxFlex="20%">
+    <!--<p *ngFor="let user of users;">
+      {{user}}
+    </p>-->
+  </div>
+</div>

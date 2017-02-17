@@ -20,7 +20,6 @@ io.sockets.on("connection", function (socket) {
 
     //This gets performed when a user joins the server.
     socket.on("adduser", function (username, fn) {
-
         //Check if username is avaliable.
         if (users[username] === undefined && username.toLowerCase !== "server" && username.length < 21) {
             socket.username = username;

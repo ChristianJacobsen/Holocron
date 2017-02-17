@@ -29,10 +29,28 @@ export class RoomlistComponent implements OnInit {
             return;
         }
 
-        this.chatService.addRoom(this.roomName).subscribe(succeeded => {
+        this.chatService.joinAddRoom(this.roomName).subscribe(succeeded => {
             if (succeeded) {
                 this.router.navigate(["/rooms", this.roomName]);
             }
         });
+    }
+
+    onJoinRoom(roomName: string) {
+        roomName = roomName.trim();
+
+        if (roomName === "") {
+            return;
+        }
+
+        this.chatService.joinAddRoom(roomName).subscribe(succeeded => {
+            if (succeeded) {
+                this.router.navigate(["/rooms", roomName]);
+            }
+        });
+    }
+
+    getDate() {
+        return new Date();
     }
 }

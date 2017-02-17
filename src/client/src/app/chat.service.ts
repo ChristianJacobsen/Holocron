@@ -5,6 +5,7 @@ import { Observable } from "rxjs/Observable";
 @Injectable()
 export class ChatService {
 
+    userName: string;
     socket: any;
 
     constructor() {
@@ -19,6 +20,10 @@ export class ChatService {
     login(userName: string): Observable<boolean> {
         const observable = new Observable(observer => {
             this.socket.emit("adduser", userName, succeeded => {
+                if (succeeded) {
+                    this.userName = userName;
+                }
+
                 observer.next(succeeded);
             });
         });
@@ -48,7 +53,7 @@ export class ChatService {
         return observable;
     }
 
-    addRoom(roomName: string): Observable<boolean> {
+    joinAddRoom(roomName: string): Observable<boolean> {
         const observable = new Observable(observer => {
             const param = {
                 room: roomName
@@ -56,6 +61,27 @@ export class ChatService {
 
             this.socket.emit("joinroom", param, function (a: boolean, b) {
                 observer.next(a);
+            });
+        });
+
+        return observable;
+    }
+
+    sendMessage(id: string, msg: string) {
+        const param = {
+            roomName: id,
+            msg: msg
+        };
+
+        this.socket.emit("sendmsg", param);
+    }
+
+    getMessages(id: string): Observable<any[]> {
+        const observable = new Observable(observer => {
+            this.socket.on("updatechat", (roomName, messageHistory) => {
+                if (roomName === id) {
+                    observer.next(messageHistory);
+                }
             });
         });
 

@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Router } from "@angular/router";
+import { ToastsManager } from "ng2-toastr";
 
 import { ChatService } from "./chat.service";
 
@@ -8,13 +9,25 @@ import { ChatService } from "./chat.service";
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.css"]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     title = "Holocron";
 
     constructor(
         private chatService: ChatService,
-        private router: Router
-    ) { }
+        private router: Router,
+        public toastr: ToastsManager,
+        vcr: ViewContainerRef
+    ) {
+        this.toastr.setRootViewContainerRef(vcr);
+    }
+
+    ngOnInit() {
+        this.chatService.getPrivateMessage().subscribe(msg => {
+            this.toastr.info(
+                msg.message,
+                msg.fromUser);
+        });
+    }
 
     onHome() {
         if (this.chatService.getUsername() === undefined) {

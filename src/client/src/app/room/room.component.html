@@ -29,12 +29,24 @@
   <!-- Users -->
   <div fxLayout="column" fxFlex="20%">
     <div fxFlex="92%">
-      <p *ngFor="let op of ops">
-        {{ op }}
-      </p>
-      <p *ngFor="let user of users">
-        {{ user }}
-      </p>
+      <md-nav-list>
+        <h3 md-subheader>Ops</h3>
+        <a *ngFor="let op of ops" (click)="false">
+          <md-list-item>
+            <md-icon md-list-avatar>account_box</md-icon>
+            <p md-line>{{ op }}</p>
+          </md-list-item>
+        </a>
+        <md-divider></md-divider>
+      </md-nav-list>
+      <md-nav-list>
+        <h3 md-subheader>Users</h3>
+        <a *ngFor="let user of users" (click)="false">
+          <md-list-item>
+            <p md-line>{{ user }}</p>
+          </md-list-item>
+        </a>
+      </md-nav-list>
     </div>
     <div fxFlex="8%">
       <button md-raised-button class="full-button" color="accent" mdTooltip="Leave room" mdTooltipPosition="above" [routerLink]="['/rooms']">

@@ -14,7 +14,6 @@ export class ChatService {
         this.socket.on("connect", function () {
             console.log("connected");
         });
-
     }
 
     login(userName: string): Observable<boolean> {
@@ -45,7 +44,7 @@ export class ChatService {
                     if (list.hasOwnProperty(room)) {
                         roomList.push({
                             name: room,
-                            users: Object.getOwnPropertyNames(list[room].users).length
+                            users: Object.getOwnPropertyNames(list[room].users).length + Object.getOwnPropertyNames(list[room].ops).length
                         });
                     }
                 }
@@ -119,6 +118,29 @@ export class ChatService {
                         ops: opsArr
                     });
                 }
+            });
+        });
+
+        return observable;
+    }
+
+    getPrivateMessage(): Observable<any> {
+        const observable = new Observable(observer => {
+            this.socket.on("recv_privatemsg", (fromUser, message) => {
+                observer.next({
+                    fromUser: fromUser,
+                    message: message
+                });
+            });
+        });
+
+        return observable;
+    }
+
+    getPrivateMessages(id: string): Observable<any[]> {
+        const observable = new Observable(observer => {
+            this.socket.on("recv_privatemsg_room", messageHistory => {
+                observer.next(messageHistory);
             });
         });
 

@@ -11,6 +11,8 @@ console.log("Server up and running, listening on port 8080");
 var rooms = {};
 //Global user object, since we want to know what rooms each user is in etc.
 var users = {};
+// Global private message object
+var privateMessages = {};
 
 //Default room.
 rooms.lobby = new Room();
@@ -41,7 +43,6 @@ io.sockets.on("connection", function (socket) {
     //When a user joins a room this processes the request.
     socket.on("joinroom", function (joinObj, fn) {
         console.log("Attempting to join a room");
-        console.log(joinObj);
 
         var room = joinObj.room;
         var pass = joinObj.pass;
@@ -68,6 +69,7 @@ io.sockets.on("connection", function (socket) {
             // Update topic
             socket.emit("updatetopic", room, rooms[room].topic, socket.username);
             io.sockets.emit("servermessage", "join", room, socket.username);
+            io.sockets.emit("roomlist", rooms);
         } else {
 
             //If the room isn"t locked we set accepted to true.
@@ -103,6 +105,7 @@ io.sockets.on("connection", function (socket) {
                 socket.emit("updatechat", room, rooms[room].messageHistory);
                 socket.emit("updatetopic", room, rooms[room].topic, socket.username);
                 io.sockets.emit("servermessage", "join", room, socket.username);
+                io.sockets.emit("roomlist", rooms);
             }
             if (fn) {
                 fn(false, reason);
@@ -139,8 +142,27 @@ io.sockets.on("connection", function (socket) {
 
         //If user exists in global user list.
         if (users[msgObj.nick] !== undefined) {
+            // Key of privateMessages is the concatination of the usernames
+            // involved in the private message, starting with the "greater" username
+            const concatKey = (msgObj.nick < socket.username ? (scoket.username + msgObj.nick) : (msgObj.nick + scoket.username));
+
+            // Add the message to the private message history between those users
+            if (privateMessages[concatKey] === undefined) {
+                privateMessages[concatKey] = [];
+            }
+            privateMessages[concatKey].push({
+                nick: socket.username,
+                timestamp: new Date(),
+                message: msgObj.message
+            });
+
             //Send the message only to this user.
             users[msgObj.nick].socket.emit("recv_privatemsg", socket.username, msgObj.message);
+
+            //Send the private message history only to the users'.
+            users[msgObj.nick].socket.emit("recv_privatemsg_room", privateMessages[concatKey]);
+            socket.emit("recv_privatemsg_room", privateMessages[concatKey]);
+
             //Callback recieves true.
             fn(true);
         }
@@ -149,6 +171,7 @@ io.sockets.on("connection", function (socket) {
 
     //When a user leaves a room this gets performed.
     socket.on("partroom", function (room) {
+        console.log(socket.username + " left room " + room);
         //remove the user from the room roster and room op roster.
         delete rooms[room].users[socket.username];
         delete rooms[room].ops[socket.username];
@@ -157,6 +180,7 @@ io.sockets.on("connection", function (socket) {
         //Update the userlist in the room.
         io.sockets.emit("updateusers", room, rooms[room].users, rooms[room].ops);
         io.sockets.emit("servermessage", "part", room, socket.username);
+        io.sockets.emit("roomlist", rooms);
     });
 
     // when the user disconnects.. perform this

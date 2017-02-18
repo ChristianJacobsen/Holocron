@@ -1,0 +1,8 @@
+<md-input-container class="full-width">
+  <input md-input type="text" [(ngModel)]="user" placeholder="To" />
+</md-input-container>
+<md-input-container class="full-width">
+  <textarea md-input type="text" [(ngModel)]="message" placeholder="Message" rows="5"></textarea>
+</md-input-container>
+<button md-raised-button (click)="onSend()" color="primary">Send</button>
+<button md-button (click)="dialogRef.close()">Cancel</button>

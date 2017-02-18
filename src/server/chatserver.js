@@ -32,6 +32,11 @@ io.sockets.on("connection", function (socket) {
                 channels: {},
                 socket: this
             };
+
+            if (privateMessages[username] === undefined) {
+                privateMessages[username] = {};
+            }
+
             console.log("User added: " + username);
             fn(true); // Callback, user name was available
         } else {
@@ -139,18 +144,24 @@ io.sockets.on("connection", function (socket) {
     });
 
     socket.on("privatemsg", function (msgObj, fn) {
-
+        console.log("Private message from " + socket.username + " to " + msgObj.nick);
         //If user exists in global user list.
         if (users[msgObj.nick] !== undefined) {
-            // Key of privateMessages is the concatination of the usernames
-            // involved in the private message, starting with the "greater" username
-            const concatKey = (msgObj.nick < socket.username ? (scoket.username + msgObj.nick) : (msgObj.nick + scoket.username));
-
-            // Add the message to the private message history between those users
-            if (privateMessages[concatKey] === undefined) {
-                privateMessages[concatKey] = [];
+            // Add the message to the private messages object
+            if (privateMessages[msgObj.nick][socket.username] === undefined) {
+                privateMessages[msgObj.nick][socket.username] = [];
             }
-            privateMessages[concatKey].push({
+            if (privateMessages[socket.username][msgObj.nick] === undefined) {
+                privateMessages[socket.username][msgObj.nick] = [];
+            }
+
+            privateMessages[msgObj.nick][socket.username].push({
+                nick: socket.username,
+                timestamp: new Date(),
+                message: msgObj.message
+            });
+
+            privateMessages[socket.username][msgObj.nick].push({
                 nick: socket.username,
                 timestamp: new Date(),
                 message: msgObj.message
@@ -159,9 +170,13 @@ io.sockets.on("connection", function (socket) {
             //Send the message only to this user.
             users[msgObj.nick].socket.emit("recv_privatemsg", socket.username, msgObj.message);
 
-            //Send the private message history only to the users'.
-            users[msgObj.nick].socket.emit("recv_privatemsg_room", privateMessages[concatKey]);
-            socket.emit("recv_privatemsg_room", privateMessages[concatKey]);
+            // Send the private message history only to the users'.
+            users[msgObj.nick].socket.emit("recv_privatemsg_room", privateMessages[msgObj.nick][socket.username]);
+            socket.emit("recv_privatemsg_room", privateMessages[socket.username][msgObj.nick]);
+
+            // Send private list
+            users[msgObj.nick].socket.emit("privatelist", privateMessages[msgObj.nick]);
+            socket.emit("privatelist", privateMessages[socket.username]);
 
             //Callback recieves true.
             fn(true);
@@ -287,6 +302,12 @@ io.sockets.on("connection", function (socket) {
     socket.on("rooms", function () {
         console.log("Requesting a list of rooms");
         socket.emit("roomlist", rooms);
+    });
+
+    //Returns a list of all avaliable rooms.
+    socket.on("privatemessages", function () {
+        console.log("Requesting a list of private messages");
+        socket.emit("privatelist", privateMessages[socket.username]);
     });
 
     //Returns a list of all connected users.

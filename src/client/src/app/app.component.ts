@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     constructor(
         private chatService: ChatService,
         private router: Router,
-        public toastr: ToastsManager,
+        private toastr: ToastsManager,
         vcr: ViewContainerRef
     ) {
         this.toastr.setRootViewContainerRef(vcr);
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.chatService.getPrivateMessage().subscribe(msg => {
-            this.toastr.info(
+            this.toastr.error(
                 msg.message,
                 msg.fromUser);
         });

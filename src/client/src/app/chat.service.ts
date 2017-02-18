@@ -48,7 +48,27 @@ export class ChatService {
                         });
                     }
                 }
+
                 observer.next(roomList);
+            });
+        });
+
+        return observable;
+    }
+
+    getPrivateList(): Observable<any[]> {
+        const observable = new Observable(observer => {
+            this.socket.emit("privatemessages");
+            this.socket.on("privatelist", list => {
+                const privateList: any[] = [];
+
+                for (const priv in list) {
+                    if (list.hasOwnProperty(priv)) {
+                        privateList.push(priv);
+                    }
+                }
+
+                observer.next(privateList);
             });
         });
 
@@ -141,6 +161,21 @@ export class ChatService {
         const observable = new Observable(observer => {
             this.socket.on("recv_privatemsg_room", messageHistory => {
                 observer.next(messageHistory);
+            });
+        });
+
+        return observable;
+    }
+
+    sendPrivateMessage(user: string, message: string): Observable<boolean> {
+        const param = {
+            nick: user,
+            message: message
+        };
+
+        const observable = new Observable(observer => {
+            this.socket.emit("privatemsg", param, succeeded => {
+                observer.next(succeeded);
             });
         });
 

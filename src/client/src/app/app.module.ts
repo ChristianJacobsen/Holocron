@@ -11,8 +11,10 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { RoomComponent } from "./room/room.component";
 import { RoomlistComponent } from "./roomlist/roomlist.component";
+import { NewPrivateMessageDialogComponent } from "./new-private-message-dialog/new-private-message-dialog.component";
 
 import { ChatService } from "./chat.service";
+import { DialogService } from "./dialog.service";
 
 import "hammerjs";
 import "ng2-toastr";
@@ -24,7 +26,8 @@ enableProdMode();
         AppComponent,
         LoginComponent,
         RoomComponent,
-        RoomlistComponent
+        RoomlistComponent,
+        NewPrivateMessageDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -53,7 +56,13 @@ enableProdMode();
         FlexLayoutModule,
         ToastModule.forRoot()
     ],
-    providers: [ChatService],
+    providers: [
+        ChatService,
+        DialogService
+    ],
+    entryComponents: [
+        NewPrivateMessageDialogComponent
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

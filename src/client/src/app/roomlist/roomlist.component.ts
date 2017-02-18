@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { ChatService } from "../chat.service";
+import { DialogService } from "../dialog.service";
 
 @Component({
     selector: "app-roomlist",
@@ -11,10 +12,14 @@ import { ChatService } from "../chat.service";
 export class RoomlistComponent implements OnInit {
 
     rooms: any[];
+    privates: any[];
     roomName: string;
 
-    constructor(private chatService: ChatService,
-        private router: Router) { }
+    constructor(
+        private chatService: ChatService,
+        private dialogService: DialogService,
+        private router: Router,
+        private viewContainerRef: ViewContainerRef) { }
 
     ngOnInit() {
         if (this.chatService.getUsername() === undefined) {
@@ -23,6 +28,10 @@ export class RoomlistComponent implements OnInit {
 
         this.chatService.getRoomList().subscribe(list => {
             this.rooms = list;
+        });
+
+        this.chatService.getPrivateList().subscribe(list => {
+            this.privates = list;
         });
     }
 
@@ -52,6 +61,10 @@ export class RoomlistComponent implements OnInit {
                 this.router.navigate(["/rooms", roomName]);
             }
         });
+    }
+
+    onNewPrivateMessage() {
+        this.dialogService.newPrivateMessage(this.viewContainerRef);
     }
 
     getDate() {

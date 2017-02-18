@@ -31,15 +31,16 @@
           <h3 md-subheader>Private messages</h3>
           <md-divider></md-divider>
           <md-nav-list>
-            <a href="#">
+            <a *ngFor="let priv of privates" (click)="false">
               <md-list-item>
                 <md-icon md-list-avatar>message</md-icon>
-                <p md-line>Jenkins</p>
-                <p md-line>{{ getDate() }}</p>
+                <p md-line>{{ priv }}</p>
               </md-list-item>
             </a>
           </md-nav-list>
-          <button md-raised-button (click)="onNewPrivMsg()" color="primary">New private message</button>
+          <md-nav-list>
+          </md-nav-list>
+          <button md-raised-button (click)="onNewPrivateMessage()" color="primary">New private message</button>
         </div>
       </div>
     </div>

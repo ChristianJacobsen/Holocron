@@ -17,6 +17,10 @@ export class RoomlistComponent implements OnInit {
         private router: Router) { }
 
     ngOnInit() {
+        if (this.chatService.getUsername() === undefined) {
+            this.router.navigate(["/login"]);
+        }
+
         this.chatService.getRoomList().subscribe(list => {
             this.rooms = list;
         });

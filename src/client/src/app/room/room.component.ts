@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 
 import { ChatService } from "../chat.service";
@@ -8,22 +8,29 @@ import { ChatService } from "../chat.service";
     templateUrl: "./room.component.html",
     styleUrls: ["./room.component.css"]
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
 
     id: string;
     messages: any[] = [];
+    users: any[];
+    ops: any[];
     scroll: boolean;
     chatBox: HTMLElement;
     messageBox: HTMLTextAreaElement;
+    userName: string;
 
     constructor(private chatService: ChatService,
         private router: Router,
         private route: ActivatedRoute) { }
 
     ngOnInit() {
+        if (this.chatService.getUsername() === undefined) {
+            this.router.navigate(["/login"]);
+        }
+
+        this.userName = this.chatService.getUsername();
         this.id = this.route.snapshot.params["id"];
         this.chatBox = document.getElementById("chatBox");
-        this.chatBox.addEventListener("DOMSubtreeModified", this.checkScroll, false);
 
         /* We encountered an odd problem that we could not figure out.
          * When using the [(ngModel)] on a variable in this component
@@ -33,6 +40,8 @@ export class RoomComponent implements OnInit {
          * results.
          * We ended up using a hacky DOM-based solution. Get the messageBox
          * by ID and interacting with it that way.
+         * Also, ngFor updates on an exact 25 second interval, which is very
+         * inefficient and strange.
          */
         this.messageBox = <HTMLTextAreaElement>document.getElementById("messageBox");
 
@@ -43,18 +52,27 @@ export class RoomComponent implements OnInit {
                 this.messages = messages;
             }
         });
+
+        this.chatService.getUsers(this.id).subscribe(allUsers => {
+            this.users = allUsers.users;
+            this.ops = allUsers.ops;
+        });
     }
 
-    checkScroll() {
-        console.log("CHANGE");
-        if (this.scroll) {
-            console.log("SCROLLING " + new Date());
-            this.chatBox.scrollTop = this.chatBox.scrollHeight - this.chatBox.clientHeight;
+    ngOnDestroy() {
+        if (this.userName !== undefined) {
+            this.chatService.leaveRoom(this.id);
         }
     }
 
-    getDate() {
-        return new Date();
+    trackByFn(index, item) {
+        return index;
+    }
+
+    checkScroll() {
+        if (this.scroll) {
+            this.chatBox.scrollTop = this.chatBox.scrollHeight - this.chatBox.clientHeight;
+        }
     }
 
     onSubmit() {

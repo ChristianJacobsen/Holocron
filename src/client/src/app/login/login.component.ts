@@ -33,11 +33,7 @@ export class LoginComponent implements OnInit {
             } else {
                 this.toastr.error(
                     "Username already taken!",
-                    "Authentication error",
-                    {
-                        titleClass: "customToastr",
-                        messageClass: "customToastr"
-                    });
+                    "Authentication error");
             }
         });
     }

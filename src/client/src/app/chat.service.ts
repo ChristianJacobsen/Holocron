@@ -31,6 +31,10 @@ export class ChatService {
         return observable;
     }
 
+    getUsername() {
+        return this.userName;
+    }
+
     getRoomList(): Observable<any[]> {
         const observable = new Observable(observer => {
             this.socket.emit("rooms");
@@ -44,7 +48,6 @@ export class ChatService {
                             users: Object.getOwnPropertyNames(list[room].users).length
                         });
                     }
-
                 }
                 observer.next(roomList);
             });
@@ -53,10 +56,10 @@ export class ChatService {
         return observable;
     }
 
-    joinAddRoom(roomName: string): Observable<boolean> {
+    joinAddRoom(id: string): Observable<boolean> {
         const observable = new Observable(observer => {
             const param = {
-                room: roomName
+                room: id
             };
 
             this.socket.emit("joinroom", param, function (a: boolean, b) {
@@ -65,6 +68,10 @@ export class ChatService {
         });
 
         return observable;
+    }
+
+    leaveRoom(id: string) {
+        this.socket.emit("partroom", id);
     }
 
     sendMessage(id: string, msg: string) {
@@ -81,6 +88,36 @@ export class ChatService {
             this.socket.on("updatechat", (roomName, messageHistory) => {
                 if (roomName === id) {
                     observer.next(messageHistory);
+                }
+            });
+        });
+
+        return observable;
+    }
+
+    getUsers(id: string): Observable<any> {
+        const observable = new Observable(observer => {
+            this.socket.on("updateusers", (roomName, users, ops) => {
+                if (roomName === id) {
+                    const usersArr = [];
+                    const opsArr = [];
+
+                    for (const user in users) {
+                        if (users.hasOwnProperty(user)) {
+                            usersArr.push(user);
+                        }
+                    }
+
+                    for (const op in ops) {
+                        if (ops.hasOwnProperty(op)) {
+                            opsArr.push(op);
+                        }
+                    }
+
+                    observer.next({
+                        users: usersArr,
+                        ops: opsArr
+                    });
                 }
             });
         });

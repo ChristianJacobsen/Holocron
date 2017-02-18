@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, enableProdMode } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
@@ -16,6 +16,8 @@ import { ChatService } from "./chat.service";
 
 import "hammerjs";
 import "ng2-toastr";
+
+enableProdMode();
 
 @NgModule({
     declarations: [
@@ -48,7 +50,7 @@ import "ng2-toastr";
             }
         ]),
         MaterialModule.forRoot(),
-        FlexLayoutModule.forRoot(),
+        FlexLayoutModule,
         ToastModule.forRoot()
     ],
     providers: [ChatService],

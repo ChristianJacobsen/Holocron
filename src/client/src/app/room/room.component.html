@@ -4,9 +4,15 @@
   <div fxLayout="column" fxFlex="80%">
     <!-- Chat -->
     <div fxFlex="92%" id="chatBox">
-      <p *ngFor="let msg of messages; let last = last">
-        {{ msg.message }} {{ getDate() }}
-      </p>
+      <div *ngFor="let msg of messages; trackBy:trackByFn; let last = last" [ngClass]="(msg.nick === userName) ? 'myMessage' : 'otherMessage'">
+        <p>
+          {{ msg.nick }}
+        </p>
+        <p>
+          {{ msg.message }}
+        </p>
+        <span *ngIf="last">{{ checkScroll() }}</span>
+      </div>
     </div>
     <!-- Input -->
     <div fxLayout="row" fxFlex="8%">
@@ -16,14 +22,24 @@
       </div>
       <!-- Send -->
       <div fxFlex="8%">
-        <button md-raised-button id="sendButton" (click)="onSubmit()" color="primary"><md-icon>send</md-icon></button>
+        <button md-raised-button class="full-button" (click)="onSubmit()" color="primary"><md-icon>send</md-icon></button>
       </div>
     </div>
   </div>
   <!-- Users -->
-  <div fxLayout="row" fxFlex="20%">
-    <!--<p *ngFor="let user of users;">
-      {{user}}
-    </p>-->
+  <div fxLayout="column" fxFlex="20%">
+    <div fxFlex="92%">
+      <p *ngFor="let op of ops">
+        {{ op }}
+      </p>
+      <p *ngFor="let user of users">
+        {{ user }}
+      </p>
+    </div>
+    <div fxFlex="8%">
+      <button md-raised-button class="full-button" color="accent" mdTooltip="Leave room" mdTooltipPosition="above" [routerLink]="['/rooms']">
+          <md-icon>arrow_back</md-icon>
+      </button>
+    </div>
   </div>
 </div>

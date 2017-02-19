@@ -1,6 +1,6 @@
 # Holocron
 
-An Angular 2 material design sockets.io chat application
+An Angular 2 material design socket.io chat application
 
 ## Features
 
@@ -68,6 +68,7 @@ We also use Gulp to enforce our TypeScript coding rules.
 * [Angular 2](https://angular.io/) - Framework
 * [Angular 2 Material](https://material.angular.io/) - Styling
 * [Angular 2 Flex-Layout](https://github.com/angular/flex-layout) - Layout
+* [Socket.IO](http://socket.io/) - Layout
 * [ExpressJS](http://expressjs.com/) - Server
 * [NPM](https://www.npmjs.com/) - Dependency Management
 * [Gulp](http://gulpjs.com/) - Enforce coding rules

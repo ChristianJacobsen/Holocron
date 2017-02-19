@@ -1,0 +1,33 @@
+md-dialog-container {
+  width: 60%;
+  margin: 0 auto;
+}
+
+textarea {
+  resize: none;
+}
+
+.myMessage,
+.otherMessage {
+  border-radius: 5px;
+  box-shadow: #B3B3B3 1px 1px 1px;
+  width: 80%;
+  max-width: 800px;
+}
+
+.myMessage {
+  background-color: #03A9F4;
+  margin-left: auto;
+  margin-right: 0.5em;
+  color: white;
+}
+
+.otherMessage {
+  background-color: #EEE;
+  margin-left: 0.5em;
+}
+
+#messages {
+    max-height: 35em;
+    overflow: auto;
+}

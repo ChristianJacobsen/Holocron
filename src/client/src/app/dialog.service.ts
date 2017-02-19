@@ -27,7 +27,7 @@ export class DialogService {
         config.viewContainerRef = viewContainerRef;
 
         dialogRef = this.dialog.open(PrivateMessageDialogComponent, config);
-        dialogRef.componentInstance.id = id;
+        dialogRef.componentInstance.to = id;
     }
 
 }

@@ -158,9 +158,10 @@ export class ChatService {
     }
 
     getPrivateMessages(id: string): Observable<any[]> {
+        this.socket.emit("queryprivatemessages", id);
         const observable = new Observable(observer => {
-            this.socket.on("recv_privatemsg_room", messageHistory => {
-                observer.next(messageHistory);
+            this.socket.on("getprivatemessages", messages => {
+                observer.next(messages);
             });
         });
 

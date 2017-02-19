@@ -178,10 +178,21 @@ io.sockets.on("connection", function (socket) {
             users[msgObj.nick].socket.emit("privatelist", privateMessages[msgObj.nick]);
             socket.emit("privatelist", privateMessages[socket.username]);
 
+            // Send private messages to dialog
+            users[msgObj.nick].socket.emit("getprivatemessages", privateMessages[msgObj.nick][socket.username]);
+            socket.emit("getprivatemessages", privateMessages[socket.username][msgObj.nick]);
+
             //Callback recieves true.
             fn(true);
         }
         fn(false);
+    });
+
+    socket.on("queryprivatemessages", function (id, fn){
+        console.log("Getting private messages between " + socket.username + " and " + id);
+        if (privateMessages[socket.username][id] !== undefined) {
+            socket.emit("getprivatemessages", privateMessages[socket.username][id]);
+        }
     });
 
     //When a user leaves a room this gets performed.

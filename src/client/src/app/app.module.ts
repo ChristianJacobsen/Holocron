@@ -63,7 +63,8 @@ enableProdMode();
         DialogService
     ],
     entryComponents: [
-        NewPrivateMessageDialogComponent
+        NewPrivateMessageDialogComponent,
+        PrivateMessageDialogComponent
     ],
     bootstrap: [AppComponent]
 })

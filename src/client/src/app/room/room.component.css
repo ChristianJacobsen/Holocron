@@ -1,22 +1,82 @@
+#usersList {
+  overflow: auto;
+}
+
+#sendButton {
+  margin-left: 1em;
+}
+
+#chatBox {
+  border-right: 1px solid rgb(200, 200, 200);
+  border-bottom: 1px solid rgb(200, 200, 200);
+  overflow: auto;
+}
+
+textarea {
+  border: none;
+  font-size: 1em;
+  height: 100%;
+  width: 100%;
+  resize: none;
+  margin: 0;
+  padding: 0.5em 0 0 0.5em;
+}
+
+textarea:focus {
+  outline: none;
+}
+
 .myMessage,
 .otherMessage {
-  border-radius: 5px;
-  box-shadow: #B3B3B3 1px 1px 1px;
   width: 80%;
   max-width: 800px;
 }
 
 .myMessage {
-  background-color: #03A9F4;
   margin-left: auto;
   margin-right: 0.5em;
-  color: white;
 }
 
 .otherMessage {
-  background-color: #EEE;
   margin-left: 0.5em;
 }
+
+
+/* Username and timestamp of messages */
+
+.myMessage>p:nth-child(1),
+.otherMessage>p:nth-child(1),
+.myMessage p:nth-child(2),
+.otherMessage>p:nth-child(2) {
+  color: #bdbdbd;
+  padding: 0;
+  margin: 0;
+  font-size: 0.8em;
+}
+
+
+/* Content of messages */
+
+.myMessage>p:nth-child(3),
+.otherMessage>p:nth-child(3) {
+  border-radius: 5px;
+  box-shadow: #B3B3B3 1px 1px 1px;
+  margin-top: 0;
+  padding: 0.5em;
+  white-space: pre-line;
+}
+
+.myMessage>p:nth-child(3) {
+  color: white;
+  background-color: #03A9F4;
+}
+
+.otherMessage>p:nth-child(3) {
+  background-color: #EEE;
+}
+
+
+/* OP operations */
 
 .operations {
   text-align: right;

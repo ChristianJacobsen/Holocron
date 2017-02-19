@@ -16,6 +16,10 @@ export class ChatService {
         });
     }
 
+    removeListeners() {
+        this.socket.removeAllListeners();
+    }
+
     login(userName: string): Observable<boolean> {
         const observable = new Observable(observer => {
             this.socket.emit("adduser", userName, succeeded => {
@@ -106,6 +110,13 @@ export class ChatService {
         const observable = new Observable(observer => {
             this.socket.on("updatechat", (roomName, messageHistory) => {
                 if (roomName === id) {
+                    // Timestamp to Date object for each message
+                    for (const msg in messageHistory) {
+                        if (messageHistory.hasOwnProperty(msg)) {
+                            messageHistory[msg].timestamp = new Date(messageHistory[msg].timestamp);
+                        }
+                    }
+
                     observer.next(messageHistory);
                 }
             });
@@ -147,7 +158,6 @@ export class ChatService {
     getPrivateMessage(): Observable<any> {
         const observable = new Observable(observer => {
             this.socket.on("recv_privatemsg", (fromUser, message) => {
-                console.log("PRIVATE MESSAGE!");
                 observer.next({
                     fromUser: fromUser,
                     message: message
@@ -162,6 +172,13 @@ export class ChatService {
         this.socket.emit("queryprivatemessages", id);
         const observable = new Observable(observer => {
             this.socket.on("getprivatemessages", messages => {
+                // Timestamp to Date object for each message
+                for (const msg in messages) {
+                    if (messages.hasOwnProperty(msg)) {
+                        messages[msg].timestamp = new Date(messages[msg].timestamp);
+                    }
+                }
+
                 observer.next(messages);
             });
         });

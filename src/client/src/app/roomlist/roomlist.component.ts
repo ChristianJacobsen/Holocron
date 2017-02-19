@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewContainerRef } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewContainerRef } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastsManager } from "ng2-toastr";
+import { Observable } from "rxjs/Observable";
 
 import { ChatService } from "../chat.service";
 import { DialogService } from "../dialog.service";
@@ -10,7 +11,7 @@ import { DialogService } from "../dialog.service";
     templateUrl: "./roomlist.component.html",
     styleUrls: ["./roomlist.component.css"]
 })
-export class RoomlistComponent implements OnInit {
+export class RoomlistComponent implements OnInit, OnDestroy {
     rooms: any[];
     privates: any[];
     roomName: string;
@@ -40,12 +41,17 @@ export class RoomlistComponent implements OnInit {
 
         this.chatService.getPrivateMessage().subscribe(msg => {
             // Set the root vcr in case a modal has been opened
+            console.log(this.vcr);
             this.toastr.setRootViewContainerRef(this.vcr);
 
             this.toastr.info(
                 msg.message,
                 msg.fromUser);
         });
+    }
+
+    ngOnDestroy() {
+        this.chatService.removeListeners();
     }
 
     onAddRoom() {

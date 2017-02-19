@@ -170,13 +170,9 @@ io.sockets.on("connection", function (socket) {
             //Send the message only to this user.
             users[msgObj.nick].socket.emit("recv_privatemsg", socket.username, msgObj.message);
 
-            // Send the private message history only to the users'.
-            //users[msgObj.nick].socket.emit("recv_privatemsg_room", privateMessages[msgObj.nick][socket.username]);
-            //socket.emit("recv_privatemsg_room", privateMessages[socket.username][msgObj.nick]);
-
             // Send private list
-            //users[msgObj.nick].socket.emit("privatelist", privateMessages[msgObj.nick]);
-            //socket.emit("privatelist", privateMessages[socket.username]);
+            users[msgObj.nick].socket.emit("privatelist", privateMessages[msgObj.nick]);
+            socket.emit("privatelist", privateMessages[socket.username]);
 
             // Send private messages to dialog
             users[msgObj.nick].socket.emit("getprivatemessages", privateMessages[msgObj.nick][socket.username]);
@@ -188,7 +184,7 @@ io.sockets.on("connection", function (socket) {
         fn(false);
     });
 
-    socket.on("queryprivatemessages", function (id, fn){
+    socket.on("queryprivatemessages", function (id, fn) {
         console.log("Getting private messages between " + socket.username + " and " + id);
         if (privateMessages[socket.username][id] !== undefined) {
             socket.emit("getprivatemessages", privateMessages[socket.username][id]);

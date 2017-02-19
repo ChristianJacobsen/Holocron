@@ -15,7 +15,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     messages: any[] = [];
     users: any[];
     ops: any[];
-    scroll: boolean;
     chatBox: HTMLElement;
     messageBox: HTMLTextAreaElement;
     userName: string;
@@ -54,8 +53,6 @@ export class RoomComponent implements OnInit, OnDestroy {
 
         this.chatService.getMessages(this.id).subscribe(messages => {
             if (this.messages.length !== messages.length) {
-                this.scroll = (this.chatBox.scrollTop - 1) === (this.chatBox.scrollHeight - this.chatBox.offsetHeight);
-
                 this.messages = messages;
             }
         });
@@ -70,9 +67,6 @@ export class RoomComponent implements OnInit, OnDestroy {
         });
 
         this.chatService.getPrivateMessage().subscribe(msg => {
-            // Set the root vcr in case a modal has been opened
-            this.toastr.setRootViewContainerRef(this.vcr);
-
             this.toastr.info(
                 msg.message,
                 msg.fromUser);
@@ -111,16 +105,19 @@ export class RoomComponent implements OnInit, OnDestroy {
         if (this.userName !== undefined) {
             this.chatService.leaveRoom(this.id);
         }
+
+        this.chatService.removeListeners();
     }
 
     trackByFn(index, item) {
         return index;
     }
 
-    checkScroll() {
-        if (this.scroll) {
+    scroll() {
+        // The timeout is simply to wait until the messages have rendered
+        setTimeout(function () {
             this.chatBox.scrollTop = this.chatBox.scrollHeight - this.chatBox.clientHeight;
-        }
+        }, 100);
     }
 
     onSubmit() {

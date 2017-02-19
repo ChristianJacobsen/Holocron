@@ -9,9 +9,10 @@
           {{ msg.nick }}
         </p>
         <p>
-          {{ msg.message }}
+          {{ msg.timestamp.toLocaleString() }}
         </p>
-        <span *ngIf="last">{{ checkScroll() }}</span>
+        <p>{{ msg.message }}</p>
+        <span id="lastMessage" *ngIf="last">{{ scroll() }}</span>
       </div>
     </div>
     <!-- Input -->
@@ -21,14 +22,14 @@
         <textarea (keydown.enter)="onSubmit();false" id="messageBox" placeholder="Message" maxlength="200"></textarea>
       </div>
       <!-- Send -->
-      <div fxFlex="8%">
+      <div fxFlex="8%" id="sendButton">
         <button md-raised-button class="full-button" (click)="onSubmit()" color="primary"><md-icon>send</md-icon></button>
       </div>
     </div>
   </div>
   <!-- Users -->
   <div fxLayout="column" fxFlex="20%">
-    <div fxFlex="92%">
+    <div fxFlex="92%" id="usersList">
       <md-nav-list>
         <h3 md-subheader>Ops</h3>
         <a *ngFor="let op of ops" (click)="false">

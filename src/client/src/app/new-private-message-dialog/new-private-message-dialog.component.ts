@@ -37,4 +37,8 @@ export class NewPrivateMessageDialogComponent implements OnInit {
             }
         });
     }
+
+    onClose() {
+        this.dialogRef.close();
+    }
 }

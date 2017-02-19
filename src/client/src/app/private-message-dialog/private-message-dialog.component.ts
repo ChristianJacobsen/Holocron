@@ -5,16 +5,17 @@ import { ToastsManager } from "ng2-toastr";
 import { ChatService } from "../chat.service";
 
 @Component({
-  selector: 'app-private-message-dialog',
-  templateUrl: './private-message-dialog.component.html',
-  styleUrls: ['./private-message-dialog.component.css']
+    selector: "app-private-message-dialog",
+    templateUrl: "./private-message-dialog.component.html",
+    styleUrls: ["./private-message-dialog.component.css"]
 })
 export class PrivateMessageDialogComponent implements OnInit {
 
     to: string;
     from: string;
-    messages: any[];
+    messages: any[] = [];
     message: string;
+    chatBox: HTMLElement;
 
     constructor(
         private dialogRef: MdDialogRef<PrivateMessageDialogComponent>,
@@ -27,9 +28,21 @@ export class PrivateMessageDialogComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.chatBox = document.getElementById("messages");
+
         this.chatService.getPrivateMessages(this.to).subscribe(messages => {
-            this.messages = messages;
+            if (this.messages.length !== messages.length) {
+                this.messages = messages;
+            }
         });
+    }
+
+    trackByFn(index, item) {
+        return index;
+    }
+
+    scroll() {
+        this.chatBox.scrollTop = this.chatBox.scrollHeight - this.chatBox.clientHeight;
     }
 
     onSend() {
@@ -44,4 +57,7 @@ export class PrivateMessageDialogComponent implements OnInit {
         });
     }
 
+    onClose() {
+        this.dialogRef.close();
+    }
 }

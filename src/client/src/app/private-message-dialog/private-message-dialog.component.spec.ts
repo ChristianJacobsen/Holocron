@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { By } from "@angular/platform-browser";
+import { DebugElement } from "@angular/core";
 
-import { PrivateMessageDialogComponent } from './private-message-dialog.component';
+import { PrivateMessageDialogComponent } from "./private-message-dialog.component";
 
-describe('PrivateMessageDialogComponent', () => {
+describe("PrivateMessageDialogComponent", () => {
   let component: PrivateMessageDialogComponent;
   let fixture: ComponentFixture<PrivateMessageDialogComponent>;
 
@@ -22,7 +22,7 @@ describe('PrivateMessageDialogComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

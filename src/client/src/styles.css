@@ -35,31 +35,6 @@ body {
   height: calc(100% - 60px);
 }
 
-#titleBar {
-  min-height: 60px !important;
-  max-height: 60px !important;
-}
-
-#chatBox {
-  border-right: 1px solid rgb(200, 200, 200);
-  border-bottom: 1px solid rgb(200, 200, 200);
-  overflow: auto;
-}
-
-#messageBox {
-  border: none;
-  font-size: 1em;
-  height: 100%;
-  width: 100%;
-  resize: none;
-  margin: 0;
-  padding: 0;
-}
-
-#messageBox:focus {
-  outline: none;
-}
-
 .full-button {
   margin: 0 !important;
   padding: 0 !important;

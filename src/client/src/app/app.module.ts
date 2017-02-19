@@ -18,6 +18,7 @@ import { DialogService } from "./dialog.service";
 
 import "hammerjs";
 import "ng2-toastr";
+import { PrivateMessageDialogComponent } from './private-message-dialog/private-message-dialog.component';
 
 enableProdMode();
 
@@ -27,7 +28,8 @@ enableProdMode();
         LoginComponent,
         RoomComponent,
         RoomlistComponent,
-        NewPrivateMessageDialogComponent
+        NewPrivateMessageDialogComponent,
+        PrivateMessageDialogComponent
     ],
     imports: [
         BrowserModule,

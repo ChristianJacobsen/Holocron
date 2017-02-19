@@ -67,6 +67,10 @@ export class RoomlistComponent implements OnInit {
         this.dialogService.newPrivateMessage(this.viewContainerRef);
     }
 
+    onPrivateMessage(id: string) {
+        this.dialogService.privateMessage(id, this.viewContainerRef);
+    }
+
     getDate() {
         return new Date();
     }

@@ -6,6 +6,7 @@ import { MdDialogRef, MdDialog, MdDialogConfig } from "@angular/material";
 import { Observable } from "rxjs/Rx";
 
 import { NewPrivateMessageDialogComponent } from "./new-private-message-dialog/new-private-message-dialog.component";
+import { PrivateMessageDialogComponent } from "./private-message-dialog/private-message-dialog.component";
 
 @Injectable()
 export class DialogService {
@@ -18,6 +19,15 @@ export class DialogService {
         config.viewContainerRef = viewContainerRef;
 
         dialogRef = this.dialog.open(NewPrivateMessageDialogComponent, config);
+    }
+
+    privateMessage(id: string, viewContainerRef: ViewContainerRef) {
+        let dialogRef: MdDialogRef<PrivateMessageDialogComponent>;
+        const config = new MdDialogConfig();
+        config.viewContainerRef = viewContainerRef;
+
+        dialogRef = this.dialog.open(PrivateMessageDialogComponent, config);
+        dialogRef.componentInstance.id = id;
     }
 
 }

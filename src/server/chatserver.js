@@ -11,6 +11,8 @@ console.log("Server up and running, listening on port 8080");
 var rooms = {};
 //Global user object, since we want to know what rooms each user is in etc.
 var users = {};
+// Global private message object
+var privateMessages = {};
 
 //Default room.
 rooms.lobby = new Room();
@@ -20,7 +22,6 @@ io.sockets.on("connection", function (socket) {
 
     //This gets performed when a user joins the server.
     socket.on("adduser", function (username, fn) {
-
         //Check if username is avaliable.
         if (users[username] === undefined && username.toLowerCase !== "server" && username.length < 21) {
             socket.username = username;
@@ -31,6 +32,11 @@ io.sockets.on("connection", function (socket) {
                 channels: {},
                 socket: this
             };
+
+            if (privateMessages[username] === undefined) {
+                privateMessages[username] = {};
+            }
+
             console.log("User added: " + username);
             fn(true); // Callback, user name was available
         } else {
@@ -42,7 +48,6 @@ io.sockets.on("connection", function (socket) {
     //When a user joins a room this processes the request.
     socket.on("joinroom", function (joinObj, fn) {
         console.log("Attempting to join a room");
-        console.log(joinObj);
 
         var room = joinObj.room;
         var pass = joinObj.pass;
@@ -69,6 +74,7 @@ io.sockets.on("connection", function (socket) {
             // Update topic
             socket.emit("updatetopic", room, rooms[room].topic, socket.username);
             io.sockets.emit("servermessage", "join", room, socket.username);
+            io.sockets.emit("roomlist", rooms);
         } else {
 
             //If the room isn"t locked we set accepted to true.
@@ -104,6 +110,7 @@ io.sockets.on("connection", function (socket) {
                 socket.emit("updatechat", room, rooms[room].messageHistory);
                 socket.emit("updatetopic", room, rooms[room].topic, socket.username);
                 io.sockets.emit("servermessage", "join", room, socket.username);
+                io.sockets.emit("roomlist", rooms);
             }
             if (fn) {
                 fn(false, reason);
@@ -137,19 +144,56 @@ io.sockets.on("connection", function (socket) {
     });
 
     socket.on("privatemsg", function (msgObj, fn) {
-
+        console.log("Private message from " + socket.username + " to " + msgObj.nick);
         //If user exists in global user list.
         if (users[msgObj.nick] !== undefined) {
+            // Add the message to the private messages object
+            if (privateMessages[msgObj.nick][socket.username] === undefined) {
+                privateMessages[msgObj.nick][socket.username] = [];
+            }
+            if (privateMessages[socket.username][msgObj.nick] === undefined) {
+                privateMessages[socket.username][msgObj.nick] = [];
+            }
+
+            privateMessages[msgObj.nick][socket.username].push({
+                nick: socket.username,
+                timestamp: new Date(),
+                message: msgObj.message
+            });
+
+            privateMessages[socket.username][msgObj.nick].push({
+                nick: socket.username,
+                timestamp: new Date(),
+                message: msgObj.message
+            });
+
             //Send the message only to this user.
             users[msgObj.nick].socket.emit("recv_privatemsg", socket.username, msgObj.message);
+
+            // Send private list
+            users[msgObj.nick].socket.emit("privatelist", privateMessages[msgObj.nick]);
+            socket.emit("privatelist", privateMessages[socket.username]);
+
+            // Send private messages to dialog
+            users[msgObj.nick].socket.emit("getprivatemessages", privateMessages[msgObj.nick][socket.username]);
+            socket.emit("getprivatemessages", privateMessages[socket.username][msgObj.nick]);
+
             //Callback recieves true.
             fn(true);
         }
         fn(false);
     });
 
+    socket.on("queryprivatemessages", function (id, fn) {
+        console.log("Getting private messages between " + socket.username + " and " + id);
+        if (privateMessages[socket.username][id] !== undefined) {
+            socket.emit("getprivatemessages", privateMessages[socket.username][id]);
+        }
+    });
+
     //When a user leaves a room this gets performed.
     socket.on("partroom", function (room) {
+        console.log(socket.username + " left room " + room);
         //remove the user from the room roster and room op roster.
         delete rooms[room].users[socket.username];
         delete rooms[room].ops[socket.username];
@@ -158,6 +202,7 @@ io.sockets.on("connection", function (socket) {
         //Update the userlist in the room.
         io.sockets.emit("updateusers", room, rooms[room].users, rooms[room].ops);
         io.sockets.emit("servermessage", "part", room, socket.username);
+        io.sockets.emit("roomlist", rooms);
     });
 
     // when the user disconnects.. perform this
@@ -264,6 +309,12 @@ io.sockets.on("connection", function (socket) {
     socket.on("rooms", function () {
         console.log("Requesting a list of rooms");
         socket.emit("roomlist", rooms);
+    });
+
+    //Returns a list of all avaliable rooms.
+    socket.on("privatemessages", function () {
+        console.log("Requesting a list of private messages");
+        socket.emit("privatelist", privateMessages[socket.username]);
     });
 
     //Returns a list of all connected users.

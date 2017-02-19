@@ -1,44 +1,21 @@
-#usersList {
+#messages {
+  max-height: 25em;
   overflow: auto;
 }
 
-#sendButton {
-  margin-left: 1em;
-}
-
-#chatBox {
-  border-right: 1px solid rgb(200, 200, 200);
-  border-bottom: 1px solid rgb(200, 200, 200);
-  overflow: auto;
-}
-
-#roomName {
-  text-align: center;
+md-dialog-container {
+  width: 60%;
+  margin: 0 auto;
 }
 
 textarea {
-  border: none;
-  font-size: 1em;
-  height: 100%;
-  width: 100%;
   resize: none;
-  margin: 0;
-  padding: 0.5em 0 0 0.5em;
-}
-
-textarea:focus {
-  outline: none;
 }
 
 .myMessage,
 .otherMessage {
   width: 80%;
   max-width: 800px;
-}
-
-.myMessage:first-child,
-.otherMessage:first-child {
-  margin-top: 1em;
 }
 
 .myMessage {
@@ -82,21 +59,4 @@ textarea:focus {
 
 .otherMessage>p:nth-child(3) {
   background-color: #EEE;
-}
-
-
-/* OP operations */
-
-.operations {
-  text-align: right;
-}
-
-.operations>* {
-  cursor: pointer;
-  color: #bdbdbd;
-}
-
-.operations>*:hover {
-  cursor: pointer;
-  color: #000;
 }

@@ -1,6 +1,69 @@
-<p>
-  room works!
-</p>
-<p>
-  {{id}}
-</p>
+<!-- Container -->
+<div fxLayoutAlign="center" class="full-height">
+  <!-- Main -->
+  <div fxLayout="column" fxFlex="80%">
+    <!-- Chat -->
+    <div fxFlex="92%" id="chatBox">
+      <div *ngFor="let msg of messages; trackBy:trackByFn; let last = last" [ngClass]="(msg.nick === userName) ? 'myMessage' : 'otherMessage'">
+        <p>
+          {{ msg.nick }}
+        </p>
+        <p>
+          {{ msg.timestamp.toLocaleString() }}
+        </p>
+        <p>{{ msg.message }}</p>
+        <span id="lastMessage" *ngIf="last">{{ scroll() }}</span>
+      </div>
+    </div>
+    <!-- Input -->
+    <div fxLayout="row" fxFlex="8%">
+      <!-- Text -->
+      <div fxFlex="92%">
+        <textarea (keydown.enter)="onSubmit();false" id="messageBox" placeholder="Message" maxlength="200"></textarea>
+      </div>
+      <!-- Send -->
+      <div fxFlex="8%" id="sendButton">
+        <button md-raised-button class="full-button" (click)="onSubmit()" color="primary"><md-icon>send</md-icon></button>
+      </div>
+    </div>
+  </div>
+  <!-- Users -->
+  <div fxLayout="column" fxFlex="20%">
+    <div fxFlex="92%" id="usersList">
+      <h3 id="roomName">{{ id }}</h3>
+      <md-divider></md-divider>
+      <md-nav-list>
+        <h3 md-subheader>Ops</h3>
+        <a *ngFor="let op of ops" (click)="false">
+          <md-list-item>
+            <p md-line>{{ op }}</p>
+            <p md-line *ngIf="isOp" class="operations">
+              <md-icon mdTooltip="Remove OP" mdTooltipPosition="below" (click)="onDeop(op)">star_border</md-icon>
+              <md-icon mdTooltip="Kick" mdTooltipPosition="below" (click)="onKick(op)">clear</md-icon>
+              <md-icon mdTooltip="Ban" mdTooltipPosition="below" (click)="onBan(op)">gavel</md-icon>
+            </p>
+          </md-list-item>
+        </a>
+        <md-divider></md-divider>
+      </md-nav-list>
+      <md-nav-list>
+        <h3 md-subheader>Users</h3>
+        <a *ngFor="let user of users" (click)="false">
+          <md-list-item>
+            <p md-line>{{ user }}</p>
+            <p md-line *ngIf="isOp" class="operations">
+              <md-icon mdTooltip="Make OP" mdTooltipPosition="below" (click)="onOp(user)">star</md-icon>
+              <md-icon mdTooltip="Kick" mdTooltipPosition="below" (click)="onKick(user)">clear</md-icon>
+              <md-icon mdTooltip="Ban" mdTooltipPosition="below" (click)="onBan(user)">gavel</md-icon>
+            </p>
+          </md-list-item>
+        </a>
+      </md-nav-list>
+    </div>
+    <div fxFlex="8%">
+      <button md-raised-button class="full-button" color="accent" mdTooltip="Leave room" mdTooltipPosition="above" [routerLink]="['/rooms']">
+          <md-icon>arrow_back</md-icon>
+      </button>
+    </div>
+  </div>
+</div>

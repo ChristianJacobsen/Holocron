@@ -1,0 +1,8 @@
+h1 {
+  cursor: pointer;
+}
+
+#titleBar {
+  min-height: 60px !important;
+  max-height: 60px !important;
+}

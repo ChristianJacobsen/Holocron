@@ -1,5 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { NgModule } from "@angular/core";
+import { NgModule, enableProdMode } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { HttpModule } from "@angular/http";
 import { RouterModule } from "@angular/router";
@@ -11,18 +11,25 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { RoomComponent } from "./room/room.component";
 import { RoomlistComponent } from "./roomlist/roomlist.component";
+import { NewPrivateMessageDialogComponent } from "./new-private-message-dialog/new-private-message-dialog.component";
 
 import { ChatService } from "./chat.service";
+import { DialogService } from "./dialog.service";
 
 import "hammerjs";
 import "ng2-toastr";
+import { PrivateMessageDialogComponent } from "./private-message-dialog/private-message-dialog.component";
+
+enableProdMode();
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         RoomComponent,
-        RoomlistComponent
+        RoomlistComponent,
+        NewPrivateMessageDialogComponent,
+        PrivateMessageDialogComponent
     ],
     imports: [
         BrowserModule,
@@ -48,10 +55,17 @@ import "ng2-toastr";
             }
         ]),
         MaterialModule.forRoot(),
-        FlexLayoutModule.forRoot(),
+        FlexLayoutModule,
         ToastModule.forRoot()
     ],
-    providers: [ChatService],
+    providers: [
+        ChatService,
+        DialogService
+    ],
+    entryComponents: [
+        NewPrivateMessageDialogComponent,
+        PrivateMessageDialogComponent
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

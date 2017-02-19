@@ -27,17 +27,29 @@ export class LoginComponent implements OnInit {
     }
 
     onLogin() {
+        this.userName = this.userName.trim();
+
+        if (this.userName === "") {
+            this.toastr.error(
+                "Username can't be empty",
+                "Username error");
+            return;
+        }
+
+        if (this.userName.length > 20) {
+            this.toastr.error(
+                "Username can't surpass 20 characters",
+                "Username error");
+            return;
+        }
+
         this.chatService.login(this.userName).subscribe(succeeded => {
             if (succeeded) {
                 this.router.navigate(["/rooms"]);
             } else {
                 this.toastr.error(
                     "Username already taken!",
-                    "Authentication error",
-                    {
-                        titleClass: "customToastr",
-                        messageClass: "customToastr"
-                    });
+                    "Authentication error");
             }
         });
     }

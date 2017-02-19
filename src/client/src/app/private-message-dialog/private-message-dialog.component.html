@@ -1,3 +1,19 @@
-<p>
-  private-message-dialog works!
-</p>
+<div class="full-width">
+  <h3>
+    {{ to }}
+  </h3>
+  <md-divider></md-divider>
+  <div id="messages">
+    <div *ngFor="let msg of messages" [ngClass]="(msg.nick === from) ? 'myMessage' : 'otherMessage'">
+      <p>{{ msg.nick }}</p>
+      <p>{{ msg.message }}</p>
+    </div>
+  </div>
+  <md-divider></md-divider>
+  <md-input-container class="full-width margin-top">
+    <textarea md-input type="text" (keydown.enter)="onSend()" [(ngModel)]="message" placeholder="Message" rows="3" maxlength="200"></textarea>
+  </md-input-container>
+  <button md-raised-button (click)="onSend()" color="primary">Send</button>
+  <button md-button (click)="dialogRef.close()">Close</button>
+
+</div>

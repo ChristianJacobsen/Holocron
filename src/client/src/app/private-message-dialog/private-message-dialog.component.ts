@@ -11,8 +11,10 @@ import { ChatService } from "../chat.service";
 })
 export class PrivateMessageDialogComponent implements OnInit {
 
-    id: string;
-    messages: string[];
+    to: string;
+    from: string;
+    messages: any[];
+    message: string;
 
     constructor(
         private dialogRef: MdDialogRef<PrivateMessageDialogComponent>,
@@ -21,11 +23,25 @@ export class PrivateMessageDialogComponent implements OnInit {
         vcr: ViewContainerRef
     ) {
         this.toastr.setRootViewContainerRef(vcr);
+        this.from = this.chatService.getUsername();
     }
 
     ngOnInit() {
+        this.chatService.getPrivateMessages(this.to).subscribe(messages => {
+            this.messages = messages;
+        });
     }
 
-    
+    onSend() {
+        this.chatService.sendPrivateMessage(this.to, this.message).subscribe(succeeded => {
+            if (succeeded) {
+                this.message = "";
+            } else {
+                this.toastr.error(
+                    "Unable to send message!",
+                    "Error");
+            }
+        });
+    }
 
 }

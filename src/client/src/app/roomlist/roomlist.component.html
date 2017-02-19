@@ -31,7 +31,7 @@
           <h3 md-subheader>Private messages</h3>
           <md-divider></md-divider>
           <md-nav-list>
-            <a *ngFor="let priv of privates" (click)="false">
+            <a *ngFor="let priv of privates" (click)="onPrivateMessage(priv)">
               <md-list-item>
                 <md-icon md-list-avatar>message</md-icon>
                 <p md-line>{{ priv }}</p>

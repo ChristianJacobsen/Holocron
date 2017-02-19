@@ -15,6 +15,7 @@ export class RoomlistComponent implements OnInit, OnDestroy {
     rooms: any[];
     privates: any[];
     roomName: string;
+    privateMessagingWith: string;
 
     constructor(
         private chatService: ChatService,
@@ -40,13 +41,15 @@ export class RoomlistComponent implements OnInit, OnDestroy {
         });
 
         this.chatService.getPrivateMessage().subscribe(msg => {
-            // Set the root vcr in case a modal has been opened
-            console.log(this.vcr);
-            this.toastr.setRootViewContainerRef(this.vcr);
+            if (msg.fromUser !== this.privateMessagingWith) {
+                // Set the root vcr in case a modal has been opened
+                this.toastr.setRootViewContainerRef(this.vcr);
 
-            this.toastr.info(
-                msg.message,
-                msg.fromUser);
+                this.toastr.info(
+                    msg.message,
+                    msg.fromUser);
+            }
+
         });
     }
 
@@ -91,7 +94,10 @@ export class RoomlistComponent implements OnInit, OnDestroy {
     }
 
     onPrivateMessage(id: string) {
-        this.dialogService.privateMessage(id, this.vcr);
+        this.privateMessagingWith = id;
+        this.dialogService.privateMessage(id, this.vcr).subscribe(closed => {
+            this.privateMessagingWith = "";
+        });
     }
 
     getDate() {

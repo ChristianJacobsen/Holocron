@@ -21,13 +21,15 @@ export class DialogService {
         dialogRef = this.dialog.open(NewPrivateMessageDialogComponent, config);
     }
 
-    privateMessage(id: string, viewContainerRef: ViewContainerRef) {
+    privateMessage(id: string, viewContainerRef: ViewContainerRef): Observable<boolean> {
         let dialogRef: MdDialogRef<PrivateMessageDialogComponent>;
         const config = new MdDialogConfig();
         config.viewContainerRef = viewContainerRef;
 
         dialogRef = this.dialog.open(PrivateMessageDialogComponent, config);
         dialogRef.componentInstance.to = id;
+
+        return dialogRef.afterClosed();
     }
 
 }

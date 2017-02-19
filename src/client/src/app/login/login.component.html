@@ -5,7 +5,7 @@
     <div fxFlex="40%" fxFlex.xs="100%" fxLayout="column" fxLayoutAlign="center none">
       <div fxFlex>
         <md-input-container class="full-width">
-          <input md-input type="text" [(ngModel)]="userName" (keydown.enter)="onLogin()" placeholder="Username" />
+          <input md-input type="text" [(ngModel)]="userName" (keydown.enter)="onLogin()" placeholder="Username" maxlength="20" />
         </md-input-container>
       </div>
       <div fxFlex>

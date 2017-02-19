@@ -12,6 +12,10 @@
   overflow: auto;
 }
 
+#roomName {
+  text-align: center;
+}
+
 textarea {
   border: none;
   font-size: 1em;

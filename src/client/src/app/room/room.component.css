@@ -32,6 +32,11 @@ textarea:focus {
   max-width: 800px;
 }
 
+.myMessage:first-child,
+.otherMessage:first-child {
+  margin-top: 1em;
+}
+
 .myMessage {
   margin-left: auto;
   margin-right: 0.5em;

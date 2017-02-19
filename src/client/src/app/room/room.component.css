@@ -17,3 +17,17 @@
   background-color: #EEE;
   margin-left: 0.5em;
 }
+
+.operations {
+  text-align: right;
+}
+
+.operations>* {
+  cursor: pointer;
+  color: #bdbdbd;
+}
+
+.operations>*:hover {
+  cursor: pointer;
+  color: #000;
+}

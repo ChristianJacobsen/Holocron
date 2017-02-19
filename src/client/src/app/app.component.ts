@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewContainerRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { ToastsManager } from "ng2-toastr";
 
 import { ChatService } from "./chat.service";
 
@@ -14,19 +13,10 @@ export class AppComponent implements OnInit {
 
     constructor(
         private chatService: ChatService,
-        private router: Router,
-        private toastr: ToastsManager,
-        vcr: ViewContainerRef
-    ) {
-        this.toastr.setRootViewContainerRef(vcr);
-    }
+        private router: Router
+    ) { }
 
     ngOnInit() {
-        this.chatService.getPrivateMessage().subscribe(msg => {
-            this.toastr.error(
-                msg.message,
-                msg.fromUser);
-        });
     }
 
     onHome() {

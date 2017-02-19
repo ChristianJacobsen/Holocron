@@ -171,12 +171,12 @@ io.sockets.on("connection", function (socket) {
             users[msgObj.nick].socket.emit("recv_privatemsg", socket.username, msgObj.message);
 
             // Send the private message history only to the users'.
-            users[msgObj.nick].socket.emit("recv_privatemsg_room", privateMessages[msgObj.nick][socket.username]);
-            socket.emit("recv_privatemsg_room", privateMessages[socket.username][msgObj.nick]);
+            //users[msgObj.nick].socket.emit("recv_privatemsg_room", privateMessages[msgObj.nick][socket.username]);
+            //socket.emit("recv_privatemsg_room", privateMessages[socket.username][msgObj.nick]);
 
             // Send private list
-            users[msgObj.nick].socket.emit("privatelist", privateMessages[msgObj.nick]);
-            socket.emit("privatelist", privateMessages[socket.username]);
+            //users[msgObj.nick].socket.emit("privatelist", privateMessages[msgObj.nick]);
+            //socket.emit("privatelist", privateMessages[socket.username]);
 
             //Callback recieves true.
             fn(true);

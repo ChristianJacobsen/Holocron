@@ -33,8 +33,12 @@
         <h3 md-subheader>Ops</h3>
         <a *ngFor="let op of ops" (click)="false">
           <md-list-item>
-            <md-icon md-list-avatar>account_box</md-icon>
             <p md-line>{{ op }}</p>
+            <p md-line *ngIf="isOp" class="operations">
+              <md-icon mdTooltip="Remove OP" mdTooltipPosition="below" (click)="onDeop(op)">star_border</md-icon>
+              <md-icon mdTooltip="Kick" mdTooltipPosition="below" (click)="onKick(op)">clear</md-icon>
+              <md-icon mdTooltip="Ban" mdTooltipPosition="below" (click)="onBan(op)">gavel</md-icon>
+            </p>
           </md-list-item>
         </a>
         <md-divider></md-divider>
@@ -44,6 +48,11 @@
         <a *ngFor="let user of users" (click)="false">
           <md-list-item>
             <p md-line>{{ user }}</p>
+            <p md-line *ngIf="isOp" class="operations">
+              <md-icon mdTooltip="Make OP" mdTooltipPosition="below" (click)="onOp(user)">star</md-icon>
+              <md-icon mdTooltip="Kick" mdTooltipPosition="below" (click)="onKick(user)">clear</md-icon>
+              <md-icon mdTooltip="Ban" mdTooltipPosition="below" (click)="onBan(user)">gavel</md-icon>
+            </p>
           </md-list-item>
         </a>
       </md-nav-list>

@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewContainerRef } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
+import { ToastsManager } from "ng2-toastr";
 
 import { ChatService } from "../chat.service";
 
@@ -18,10 +19,16 @@ export class RoomComponent implements OnInit, OnDestroy {
     chatBox: HTMLElement;
     messageBox: HTMLTextAreaElement;
     userName: string;
+    isOp: boolean;
 
     constructor(private chatService: ChatService,
         private router: Router,
-        private route: ActivatedRoute) { }
+        private route: ActivatedRoute,
+        private toastr: ToastsManager,
+        private vcr: ViewContainerRef
+    ) {
+        this.toastr.setRootViewContainerRef(this.vcr);
+    }
 
     ngOnInit() {
         if (this.chatService.getUsername() === undefined) {
@@ -56,6 +63,47 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.chatService.getUsers(this.id).subscribe(allUsers => {
             this.users = allUsers.users;
             this.ops = allUsers.ops;
+
+            if (this.ops.indexOf(this.chatService.getUsername()) !== -1) {
+                this.isOp = true;
+            }
+        });
+
+        this.chatService.getPrivateMessage().subscribe(msg => {
+            // Set the root vcr in case a modal has been opened
+            this.toastr.setRootViewContainerRef(this.vcr);
+
+            this.toastr.info(
+                msg.message,
+                msg.fromUser);
+        });
+
+        this.chatService.getOpped(this.id).subscribe(opped => {
+            if (opped) {
+                this.toastr.success(
+                    "You have been opped!",
+                    "Opped!");
+            }
+        });
+
+        this.chatService.getDeOpped(this.id).subscribe(deOpped => {
+            if (deOpped) {
+                this.toastr.warning(
+                    "You have been de-opped",
+                    "De-opped!");
+            }
+        });
+
+        this.chatService.getKicked(this.id).subscribe(kicked => {
+            if (kicked) {
+                this.router.navigate(["/rooms"]);
+            }
+        });
+
+        this.chatService.getBanned(this.id).subscribe(banned => {
+            if (banned) {
+                this.router.navigate(["/rooms"]);
+            }
         });
     }
 
@@ -83,5 +131,61 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.chatService.sendMessage(this.id, this.messageBox.value);
 
         this.messageBox.value = "";
+    }
+
+    onOp(user: string) {
+        this.chatService.op(this.id, user).subscribe(succeeded => {
+            if (succeeded) {
+                this.toastr.success(
+                    user + " has been added to ops!",
+                    "Success!");
+            } else {
+                this.toastr.error(
+                    "Could not op " + user,
+                    "Error!");
+            }
+        });
+    }
+
+    onDeop(user: string) {
+        this.chatService.deOp(this.id, user).subscribe(succeeded => {
+            if (succeeded) {
+                this.toastr.success(
+                    user + " has been removed from ops!",
+                    "Success!");
+            } else {
+                this.toastr.error(
+                    "Could not deop " + user,
+                    "Error!");
+            }
+        });
+    }
+
+    onKick(user: string) {
+        this.chatService.kick(this.id, user).subscribe(succeeded => {
+            if (succeeded) {
+                this.toastr.success(
+                    user + " has been removed from kicked!",
+                    "Success!");
+            } else {
+                this.toastr.error(
+                    "Could not kick " + user,
+                    "Error!");
+            }
+        });
+    }
+
+    onBan(user: string) {
+        this.chatService.ban(this.id, user).subscribe(succeeded => {
+            if (succeeded) {
+                this.toastr.success(
+                    user + " has been banned",
+                    "Success!");
+            } else {
+                this.toastr.error(
+                    "Could not ban " + user,
+                    "Error!");
+            }
+        });
     }
 }

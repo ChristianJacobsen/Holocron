@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, ViewContainerRef } from "@angular/core";
 import * as io from "socket.io-client";
 import { Observable } from "rxjs/Observable";
 
@@ -147,6 +147,7 @@ export class ChatService {
     getPrivateMessage(): Observable<any> {
         const observable = new Observable(observer => {
             this.socket.on("recv_privatemsg", (fromUser, message) => {
+                console.log("PRIVATE MESSAGE!");
                 observer.next({
                     fromUser: fromUser,
                     message: message
@@ -176,6 +177,114 @@ export class ChatService {
         const observable = new Observable(observer => {
             this.socket.emit("privatemsg", param, succeeded => {
                 observer.next(succeeded);
+            });
+        });
+
+        return observable;
+    }
+
+    op(room: string, user: string): Observable<boolean> {
+        const param = {
+            room: room,
+            user: user
+        };
+
+        const observable = new Observable(observer => {
+            this.socket.emit("op", param, succeeded => {
+                observer.next(succeeded);
+            });
+        });
+
+        return observable;
+    }
+
+    deOp(room: string, user: string): Observable<boolean> {
+        const param = {
+            room: room,
+            user: user
+        };
+
+        const observable = new Observable(observer => {
+            this.socket.emit("deop", param, succeeded => {
+                observer.next(succeeded);
+            });
+        });
+
+        return observable;
+    }
+
+    kick(room: string, user: string): Observable<boolean> {
+        const param = {
+            room: room,
+            user: user
+        };
+
+        const observable = new Observable(observer => {
+            this.socket.emit("kick", param, succeeded => {
+                observer.next(succeeded);
+            });
+        });
+
+        return observable;
+    }
+
+    ban(room: string, user: string): Observable<boolean> {
+        const param = {
+            room: room,
+            user: user
+        };
+
+        const observable = new Observable(observer => {
+            this.socket.emit("ban", param, succeeded => {
+                observer.next(succeeded);
+            });
+        });
+
+        return observable;
+    }
+
+    getOpped(id: string): Observable<boolean> {
+        const observable = new Observable(observer => {
+            this.socket.on("opped", (room, oppedUser, oppedBy) => {
+                if (room === id && oppedUser === this.userName) {
+                    observer.next(true);
+                }
+            });
+        });
+
+        return observable;
+    }
+
+    getDeOpped(id: string): Observable<boolean> {
+        const observable = new Observable(observer => {
+            this.socket.on("deopped", (room, deOppedUser, deoppedBy) => {
+                if (room === id && deOppedUser === this.userName) {
+                    observer.next(true);
+                }
+            });
+        });
+
+        return observable;
+    }
+
+    getKicked(id: string): Observable<boolean> {
+        const observable = new Observable(observer => {
+            this.socket.on("kicked", (room, kickedUser, kickedBy) => {
+                if (room === id && kickedUser === this.userName) {
+                    observer.next(true);
+                }
+            });
+        });
+
+        return observable;
+    }
+
+    getBanned(id: string): Observable<boolean> {
+        const observable = new Observable(observer => {
+            this.socket.on("banned", (room, bannedUser, bannedBy) => {
+                if (room === id && bannedUser === this.userName) {
+                    observer.next(true);
+                }
             });
         });
 

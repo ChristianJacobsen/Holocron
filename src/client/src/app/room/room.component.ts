@@ -63,6 +63,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 
             if (this.ops.indexOf(this.chatService.getUsername()) !== -1) {
                 this.isOp = true;
+            } else {
+                this.isOp = false;
             }
         });
 

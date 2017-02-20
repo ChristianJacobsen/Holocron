@@ -12,7 +12,7 @@
           {{ msg.timestamp.toLocaleString() }}
         </p>
         <p>{{ msg.message }}</p>
-        <span id="lastMessage" *ngIf="last">{{ scroll() }}</span>
+        <span *ngIf="last">{{ scroll() }}</span>
       </div>
     </div>
     <!-- Input -->

@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2017 Christian A. Jacobsen
+Copyright (c) 2017 Christian A. Jacobsen & Hilmar Tryggvason
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

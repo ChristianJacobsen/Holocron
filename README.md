@@ -68,6 +68,7 @@ We also use Gulp to enforce our TypeScript coding rules.
 * [Angular 2](https://angular.io/) - Framework
 * [Angular 2 Material](https://material.angular.io/) - Styling
 * [Angular 2 Flex-Layout](https://github.com/angular/flex-layout) - Layout
+* [Toastr](https://github.com/CodeSeven/toastr) ([ng2-toastr](https://github.com/PointInside/ng2-toastr)) - Toast notifications
 * [Socket.IO](http://socket.io/) - WebSocket wrapper
 * [ExpressJS](http://expressjs.com/) - Server
 * [NPM](https://www.npmjs.com/) - Dependency Management
